@@ -13,7 +13,7 @@ eval $(aws ecr get-login --no-include-email --region us-east-1)
 
 # Building Docker
 echo -e "\n\nBuilding docker..."
-docker build -t $LOGICAL_NAME .
+docker build -t $LOGICAL_NAME --build-arg ENV=$ENV .
 
 # Tag Image
 docker tag $LOGICAL_NAME:latest $ECR_URI:latest
