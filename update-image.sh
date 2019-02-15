@@ -2,14 +2,18 @@
 
 LOGICAL_NAME=${GITHUB_REPOSITORY/repostnetwork\//}
 
-# Configure ECR
-echo -e "\n\nCreating ECR repository..."
-aws ecr create-repository --repository-name $LOGICAL_NAME || true
-
-#echo -e "\n\nLogging into ECR..."
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --output text --query 'Account')
 ECR_REPOSITORY=`aws ecr get-login --no-include-email --region us-east-1 | awk 'NF{ print $NF }'`
 ECR_URI=$ECR_REPOSITORY/$LOGICAL_NAME
 eval $(aws ecr get-login --no-include-email --region us-east-1)
+
+echo $LOGICAL_NAME
+echo $ECR_REPOSITORY
+echo $ECR_URI
+
+# Configure ECR
+echo -e "\n\nCreating ECR repository..."
+aws ecr create-repository --repository-name $LOGICAL_NAME || true
 
 # Building Docker
 echo -e "\n\nBuilding docker..."
