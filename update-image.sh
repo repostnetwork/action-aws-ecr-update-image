@@ -1,14 +1,14 @@
 #!/bin/bash
 
-LOGICAL_NAME=${GITHUB_REPOSITORY/repostnetwork\//}
+if [ -z "$LOGICAL_NAME" ]
+then
+      echo "The environment variable LOGICAL_NAME must be defined"
+      exit 1
+fi
 
 ECR_REPOSITORY=`aws ecr get-login --no-include-email --region us-east-1 | awk 'NF{ print $NF }' | sed -e 's/^http:\/\///g' -e 's/^https:\/\///g'`
 ECR_URI=$ECR_REPOSITORY/$LOGICAL_NAME
 eval $(aws ecr get-login --no-include-email --region us-east-1)
-
-echo $LOGICAL_NAME
-echo $ECR_REPOSITORY
-echo $ECR_URI
 
 echo -e "Creating ECR repository..."
 aws ecr create-repository --repository-name $LOGICAL_NAME || true
