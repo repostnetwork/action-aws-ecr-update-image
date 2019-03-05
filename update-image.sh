@@ -21,3 +21,5 @@ docker tag $LOGICAL_NAME:latest $ECR_URI:latest
 
 echo -e "Pushing to ECR..."
 docker push $ECR_URI:latest
+
+aws ecs update-service --force-new-deployment --cluster repost --service $LOGICAL_NAME
