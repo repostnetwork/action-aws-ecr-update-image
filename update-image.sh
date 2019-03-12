@@ -10,6 +10,9 @@ ECR_REPOSITORY=`aws ecr get-login --no-include-email --region us-east-1 | awk 'N
 ECR_URI=$ECR_REPOSITORY/$LOGICAL_NAME
 eval $(aws ecr get-login --no-include-email --region us-east-1)
 
+echo -e "Creating CloudWatch Log Group..."
+aws logs create-log-group --log-group-name ecs/$LOGICAL_NAME || true
+
 echo -e "Creating ECR repository..."
 aws ecr create-repository --repository-name $LOGICAL_NAME || true
 
