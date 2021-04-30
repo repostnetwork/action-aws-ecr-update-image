@@ -11,7 +11,7 @@ ECR_URI=$ECR_REPOSITORY/$LOGICAL_NAME
 eval $(aws ecr get-login --no-include-email --region us-east-1)
 
 echo -e "Building Docker..."
-docker build -t $LOGICAL_NAME --build-arg ENV=$ENV . || exit 1
+docker build -t $LOGICAL_NAME --build-arg ENV=$ENV --build-arg TYPE=$TYPE . || exit 1
 
 echo -e "Creating CloudWatch Log Group..."
 aws logs create-log-group --log-group-name ecs/$LOGICAL_NAME || true
